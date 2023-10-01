@@ -1,5 +1,5 @@
 ![](2023-09-28-07-06-51.png)
-- by Christopher Manning
+- by Christopher Manning - CS224N
 ![](2023-09-28-07-07-15.png)
 ![](2023-09-28-07-09-48.png)
 - How human languages can be complex
@@ -89,7 +89,61 @@
 - its always the case with these softmax style models
 - ![](2023-09-28-08-47-13.png)
 ![](2023-09-28-08-48-26.png)
+- the api.load('glove-wiki-gigaword-100') is a particular set of word vectors 
+- golve word vectors that was made by stanford in 2014
+- we are loading a 100d word vector, so that things run faster
+- `model['bread']` will give the word vector for the word bread which will be a 100d vector
+- `model['bread'].shape` will give the shape of the vector
+- as bread and croissant are similar, we can see that the dot product of the two vectors is high 
+- `model.most_similar(negative='banana')`
+    - this will give the words that are most dissimilar to banana
+```
+result=model.most_similar(positive=['woman','king'],negative=['man'])
+print("{}: {:.4f}".format(*result[0]))
+```
+```
+def analogy(x1,x2,y1):
+    result=model.most_similar(positive=[y1,x2],negative=[x1])
+    return result[0][0]
+``` 
+- analogy task is to start with a word like king, subtract out a component like man and add back in woman component
+    - what will the output be,it should be `queen`
+![](2023-09-28-21-13-57.png)
+```
+analogy('man','king','woman')
+analogy('king','man','queen')
+```
+- its not always perfect
+```
+analogy('australia','beer','france')
+```
+```
+analogy('pencil','sketching','camera')
+```
+```
+analogy('obama','clinton','reagan')
+```
+```
+analogy('tall','tallest','long')
+```
+ 
 
-- i downloaded glove 6b from https://downloads.cs.stanford.edu/nlp/data/glove.6B.zip
-- https://youtu.be/rmVRLeJRkl4?list=PLoROMvodv4rMFqRtEuo6SGjY4XbRIVRd4&t=3483
-- continue from here
+- try using this colab.
+    - https://colab.research.google.com/drive/1_zJacC80aaOomzQMF5kICIObESSwOIwD#scrollTo=1xGrPYhT_V0i
+
+- Distinctino between two vectors per word,
+- if a word has two different meaning, then we will have two different vectors for that word
+- `star` can be a movie star or a star in the sky, so we will have two different vectors for that
+- `bank` can be a river bank or a financial bank, so we will have two different vectors for that
+- `run` can be a verb or a noun, so we will have two different vectors for that
+
+- https://www.youtube.com/playlist?list=PL3FW7Lu3i5Jsnh1rnUwq_TcylNr7EkRe6
+    - the above video is for speech technology
+
+- cs224 - Natural Language Understanding
+    - https://www.youtube.com/playlist?list=PLoROMvodv4rObpMCir6rNNUlFAn56Js20
+
+-  for this class we do , working with text and doing various kinds tasks like text analysis and undestanding, machine translation, Q and A, how to parse sentences, 
+- Whethere you are predicting the context word or center word
+    - we were doing the prediction of the context words, `Skip grand model`
+        - skip grand with negative sampling
